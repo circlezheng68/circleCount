@@ -15,6 +15,7 @@
             <button onclick="showPage(1)" class="tab-btn bg-gray-200 px-4 py-2 rounded">注册沙盘流程</button>
             <button onclick="showPage(2)" class="tab-btn bg-gray-200 px-4 py-2 rounded">合规成本&补贴测算</button>
             <button onclick="showPage(3)" class="tab-btn bg-gray-200 px-4 py-2 rounded">简易流水记账</button>
+            <button onclick="showPage(4)" class="tab-btn bg-gray-200 px-4 py-2 rounded">报税指引</button>
         </div>
 
         <div id="page0" class="page">
@@ -109,9 +110,35 @@
                 </div>
                 <button onclick="calcCost()" class="mt-4 bg-green-600 text-white px-6 py-2 rounded">开始测算</button>
             </div>
+
+            <details class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
+                <summary class="font-bold cursor-pointer text-gray-700">📊 测算依据说明（点击展开）</summary>
+                <div class="mt-3 text-sm text-gray-600 space-y-2">
+                    <p><strong>1. 代账费（300 元/月）：</strong>参考国内个体户委托持证代理记账机构的市场均价，含月度凭证整理、纳税申报、年报公示等服务。</p>
+                    <p><strong>2. 员工社保（600 元/人/月）：</strong>按小作坊所在地灵活就业/个体工商户参保最低档估算，包含养老、医疗、失业保险单位承担部分。实际金额以当地社平工资 60% 为基数。</p>
+                    <p><strong>3. 政府补贴抵扣（1200 元/月）：</strong>依据《个体工商户创业补贴政策》，含一次性创业补贴 10000 元分摊 12 个月，以及社保补贴约 200 元/月。</p>
+                    <p><strong>4. 银行贷款额度（月流水 × 0.6）：</strong>参考「银税互动」普惠贷款产品（如税易贷、流水贷）的授信模型，按月均经营性收入 60% 核定月度可贷额度上限。</p>
+                    <p class="text-yellow-700">⚠️ 以上参数为行业参考值，实际以当地税务机关、社保局、银行最新政策为准。</p>
+                </div>
+            </details>
+
             <div class="bg-white p-6 rounded-xl shadow">
                 <canvas id="costChart" height="220"></canvas>
                 <div id="calcResult" class="mt-4 text-lg"></div>
+            </div>
+
+            <div class="bg-green-50 border border-green-200 rounded-xl p-5 mt-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div>
+                        <h3 class="text-lg font-bold text-green-700">📞 需要专业人工客服？</h3>
+                        <p class="text-sm text-gray-600 mt-1">如对测算结果、补贴申领或合规方案有疑问，可联系专属财税顾问获取一对一服务。</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="contactService('online')" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">在线咨询</button>
+                        <button onclick="contactService('phone')" class="bg-white border border-green-600 text-green-700 px-4 py-2 rounded-lg hover:bg-green-50">电话回拨</button>
+                    </div>
+                </div>
+                <div id="serviceMsg" class="hidden mt-4 p-3 bg-white border border-green-200 rounded text-sm text-gray-700"></div>
             </div>
         </div>
 
@@ -142,6 +169,61 @@
                 <div id="warnBox" class="p-3 bg-yellow-50 border border-yellow-200 rounded mb-4">等待录入流水后生成预警提示</div>
                 <h4 class="font-bold mb-2">流水记录</h4>
                 <div id="recordList" class="space-y-2 max-h-60 overflow-y-auto"></div>
+            </div>
+        </div>
+
+        <div id="page4" class="page hidden">
+            <h2 class="text-2xl font-bold mb-6">小作坊报税指引</h2>
+            <div class="bg-white p-6 rounded-xl shadow mb-6">
+                <h3 class="text-lg font-bold mb-3 text-green-700">📅 纳税申报周期</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li>• <strong>增值税：</strong>小规模纳税人按季申报，于每季度结束后 15 日内（即 1/4/7/10 月 15 日前）</li>
+                    <li>• <strong>个人所得税经营所得：</strong>按季预缴，季度终了后 15 日内；年度终了后 3 个月内汇算清缴</li>
+                    <li>• <strong>印花税：</strong>按次或按季申报，按季申报于季度终了后 15 日内</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow mb-6">
+                <h3 class="text-lg font-bold mb-3 text-green-700">🧾 常见应税项目</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700">
+                    <div class="border p-3 rounded">销售货物收入 → 增值税 1%（小规模减按 1% 征收）</div>
+                    <div class="border p-3 rounded">购销合同 → 印花税 0.3‰</div>
+                    <div class="border p-3 rounded">经营所得 → 个人所得税 5%‑35% 五级累进</div>
+                    <div class="border p-3 rounded">代账服务费 → 可在经营所得中扣除</div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow mb-6">
+                <h3 class="text-lg font-bold mb-3 text-green-700">📝 报税操作流程</h3>
+                <ol class="space-y-2 text-gray-700 list-decimal list-inside">
+                    <li>登录「电子税务局」（自然人电子税务局或新电子税局）</li>
+                    <li>完成「实名认证」绑定个体户信息</li>
+                    <li>选择「我要办税 → 税费申报及缴纳」</li>
+                    <li>依次填写《增值税及附加税费申报表（小规模）》和《个人所得税经营所得纳税申报表（A/B 表）》</li>
+                    <li>确认数据无误后提交，系统自动计算应纳税额</li>
+                    <li>选择「税费缴纳」三方协议扣款或扫码缴税</li>
+                    <li>缴款成功后可下载「完税凭证」存档备查</li>
+                </ol>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-6">
+                <h3 class="text-lg font-bold mb-2 text-yellow-700">⚠️ 常见风险提醒</h3>
+                <ul class="space-y-1 text-gray-700 list-disc list-inside">
+                    <li>连续 12 个月销售额超过 500 万，将被强制登记为一般纳税人</li>
+                    <li>未按期申报将产生每日万分之五滞纳金及罚款</li>
+                    <li>开具发票金额与申报收入不一致是稽查高风险信号</li>
+                    <li>购买虚假进项票抵扣属虚开发票行为，可能涉及刑事责任</li>
+                </ul>
+            </div>
+
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                <h3 class="text-lg font-bold mb-2 text-green-700">💡 合规小贴士</h3>
+                <ul class="space-y-1 text-gray-700 list-disc list-inside">
+                    <li>季度营收 30 万以内可享增值税减免，但切记仍需「零申报」</li>
+                    <li>保留所有进销项票据、银行流水至少 10 年</li>
+                    <li>建议每月使用本应用「简易流水记账」整理数据，报税前一键导出</li>
+                    <li>如不确定，建议委托持证代账机构处理，月费约 300 元</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -204,10 +286,20 @@ function calcCost(){
             }]
         }
     })
-    document.getElementById('calcResult').innerText = 
+    document.getElementById('calcResult').innerText =
         `✅抵扣后，您每月实际合规成本仅${realCost}元。
         ⚠️风险提示：不做合规会存在税务稽查补税风险，无法开具专票丢失大客户。
         📈预估可获得银行经营贷款额度：${Math.floor(monthIncome*0.6)}元`;
+}
+
+function contactService(type){
+    const msgBox = document.getElementById('serviceMsg');
+    msgBox.classList.remove('hidden');
+    if(type === 'online'){
+        msgBox.innerHTML = '💼 已为您接通在线客服，顾问「小财」将在 1 分钟内响应。<br>工作日 9:00‑18:00 实时回复，非工作时间可留言。';
+    }else if(type === 'phone'){
+        msgBox.innerHTML = '☎️ 电话回拨服务已预约。<br>请保持手机畅通，财税顾问将在 30 分钟内联系您。<br>服务时间：工作日 9:00‑18:00，热线：400‑XXX‑XXXX。';
+    }
 }
 
 const STORAGE_KEY = 'finance_records';
