@@ -98,7 +98,17 @@
         <div id="page2" class="page hidden">
             <h2 class="text-2xl font-bold mb-6">合规成本&补贴测算器</h2>
             <div class="bg-white p-6 rounded-xl shadow mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block mb-1">所属行业</label>
+                        <select id="industryType" class="w-full border p-2 rounded">
+                            <option value="陶瓷">陶瓷</option>
+                            <option value="食品加工">食品加工</option>
+                            <option value="手工艺">手工艺</option>
+                            <option value="纺织服装">纺织服装</option>
+                            <option value="木器家具">木器家具</option>
+                        </select>
+                    </div>
                     <div>
                         <label class="block mb-1">员工人数</label>
                         <input type="number" id="staffNum" value="2" class="w-full border p-2 rounded">
@@ -266,6 +276,7 @@ function downloadList(){
 
 let chart = null;
 function calcCost(){
+    const industry = document.getElementById('industryType').value;
     const staff = Number(document.getElementById('staffNum').value);
     const monthIncome = Number(document.getElementById('monthIncome').value);
     const daiZhang = 300;
@@ -287,7 +298,8 @@ function calcCost(){
         }
     })
     document.getElementById('calcResult').innerText =
-        `✅抵扣后，您每月实际合规成本仅${realCost}元。
+        `🏷️所属行业：${industry}
+        ✅抵扣后，您每月实际合规成本仅${realCost}元。
         ⚠️风险提示：不做合规会存在税务稽查补税风险，无法开具专票丢失大客户。
         📈预估可获得银行经营贷款额度：${Math.floor(monthIncome*0.6)}元`;
 }
